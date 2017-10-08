@@ -75,10 +75,12 @@ public class GhostActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(wordFragment.length() >= 4 ){
-                    yourWord = dictionary.getAnyWordStartingWith(wordFragment);
+                    yourWord = dictionary.getGoodWordStartingWith(wordFragment, whoEndsFirst);
                     if(yourWord == "noWord")
                         createToast("You Win! No such word",1000);
                     else if(yourWord == "sameAsPrefix")
+                        createToast("You Win! Computer ended the word",1000);
+                    else if(dictionary.isWord(wordFragment))
                         createToast("You Win! Computer ended the word",1000);
                     else
                         Toast.makeText(getApplication(),"Computer wins. The word was : " + wordSelectedByComputer,Toast.LENGTH_LONG).show();
@@ -98,6 +100,10 @@ public class GhostActivity extends AppCompatActivity {
         try {
             InputStream inputStream = assetManager.open("words.txt");
             dictionary = new SimpleDictionary(inputStream);
+            /**
+             * Use the following object to implement FastDictionary
+             */
+            //dictionary = new FastDictionary(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
             createToast("Could not load dictionary",500);
